@@ -70,20 +70,20 @@ if st.button("Run"):
             cols = ['Loc'] + [col for col in df.columns if col != 'Loc']
             df = df[cols]
 
-            
+            cols_to_fix = ['Excess Paid', 'Excess Billing', 'Short Billing', 'Short / Missing Roster', 'Training & Ojt', 'Complimentary Hrs.']
 
-            cols_to_fix = cols_to_fix = [ 'Excess Paid', 'Excess Billing', 'Short Billing', 'Short / Missing Roster', 'Training & Ojt', 'Complimentary Hrs.' ]
-            df[cols_to_fix] = df[cols_to_fix].fillna(0).astype(int)
-
-            # Your existing filter line
-            df = df[df[cols_to_fix].sum(axis=1) == 0]
-            # 1. Convert back to object/string so they can hold blanks
-            df[cols_to_fix] = df[cols_to_fix].astype(str)
-            
-            # 2. Replace the '0' strings with actual blanks
+            # 1. Clean them up first (ensure no 'nan' strings or spaces are hiding there)
             for col in cols_to_fix:
-                df[col] = df[col].astype(str).replace(['0', '0.0', 'nan', 'None'], '')
+                df[col] = df[col].astype(str).replace(['nan', 'None', '0', '0.0'], '').str.strip()
+
+            # 2. Remove row ONLY if all 6 columns are exactly '' (empty string)
+            # This keeps the row if even ONE of them has data.
+            df = df[~((df[cols_to_fix] == '').all(axis=1))]
+
             dataframes[name] = df
+            
+
+            
 
         st.write("Combining data...")
 
