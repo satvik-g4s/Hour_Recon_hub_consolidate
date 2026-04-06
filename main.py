@@ -70,17 +70,26 @@ if st.button("Run"):
             cols = ['Loc'] + [col for col in df.columns if col != 'Loc']
             df = df[cols]
 
-            cols_to_fix = ['Excess Paid', 'Excess Billing', 'Short Billing', 'Short / Missing Roster', 'Training & Ojt', 'Complimentary Hrs.']
-
-            # 1. Clean them up first (ensure no 'nan' strings or spaces are hiding there)
+            cols_to_fix = [ 'Excess Paid', 'Excess Billing', 'Short Billing', 'Short / Missing Roster', 'Training & Ojt', 'Complimentary Hrs.' ]
+            
+            # Ensure columns exist (VERY IMPORTANT safety)
+            cols_to_fix = [col for col in cols_to_fix if col in df.columns]
+            
+            # Clean properly
             for col in cols_to_fix:
-                df[col] = df[col].astype(str).replace(['nan', 'None', '0', '0.0'], '').str.strip()
-
-            # 2. Remove row ONLY if all 6 columns are exactly '' (empty string)
-            # This keeps the row if even ONE of them has data.
-            df = df[~((df[cols_to_fix] == '').all(axis=1))]
-
-            dataframes[name] = df
+                df[col] = (
+                    df[col]
+                    .replace([0, 0.0], pd.NA)   # handle numeric zeros
+                    .astype(str)
+                    .replace(['nan', 'None'], '')
+                    .str.strip()
+                )
+            
+            # Convert empty strings back to NA (important trick)
+            df[cols_to_fix] = df[cols_to_fix].replace('', pd.NA)
+            
+            # 🔥 FINAL FILTER (this is the key fix)
+            df = df.dropna(subset=cols_to_fix, how='all')
             
 
             
