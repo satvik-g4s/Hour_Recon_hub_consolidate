@@ -90,6 +90,8 @@ if st.button("Run"):
             
             # 🔥 FINAL FILTER (this is the key fix)
             df = df.dropna(subset=cols_to_fix, how='all')
+
+            dataframes[name] = df
             
 
             
