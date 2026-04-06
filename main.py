@@ -70,7 +70,7 @@ if st.button("Run"):
             cols = ['Loc'] + [col for col in df.columns if col != 'Loc']
             df = df[cols]
 
-            dataframes[name] = df
+            
 
             cols_to_fix = cols_to_fix = [ 'Excess Paid', 'Excess Billing', 'Short Billing', 'Short / Missing Roster', 'Training & Ojt', 'Complimentary Hrs.' ]
             df[cols_to_fix] = df[cols_to_fix].fillna(0).astype(int)
@@ -81,7 +81,9 @@ if st.button("Run"):
             df[cols_to_fix] = df[cols_to_fix].astype(str)
             
             # 2. Replace the '0' strings with actual blanks
-            df[cols_to_fix] = df[cols_to_fix].replace('0', '')
+            for col in cols_to_fix:
+                df[col] = df[col].astype(str).replace(['0', '0.0', 'nan', 'None'], '')
+            dataframes[name] = df
 
         st.write("Combining data...")
 
