@@ -72,6 +72,17 @@ if st.button("Run"):
 
             dataframes[name] = df
 
+            cols_to_fix = ['Excess Paid', 'Excess billing', 'Short billing', 'Short / Missing Roster', 'Training & OJT', 'Complimentary Hrs.']
+            df[cols_to_fix] = df[cols_to_fix].fillna(0).astype(int)
+
+            # Your existing filter line
+            df = df[df[cols_to_fix].sum(axis=1) == 0]
+            # 1. Convert back to object/string so they can hold blanks
+            df[cols_to_fix] = df[cols_to_fix].astype(str)
+            
+            # 2. Replace the '0' strings with actual blanks
+            df[cols_to_fix] = df[cols_to_fix].replace('0', '')
+
         st.write("Combining data...")
 
         all_cities_df = pd.concat(dataframes.values(), ignore_index=True)
