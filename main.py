@@ -72,7 +72,7 @@ if st.button("Run"):
 
             dataframes[name] = df
 
-            cols_to_fix = ['Excess Paid', 'Excess billing', 'Short billing', 'Short / Missing Roster', 'Training & OJT', 'Complimentary Hrs.']
+            cols_to_fix = cols_to_fix = [ 'Excess Paid', 'Excess Billing', 'Short Billing', 'Short / Missing Roster', 'Training & Ojt', 'Complimentary Hrs.' ]
             df[cols_to_fix] = df[cols_to_fix].fillna(0).astype(int)
 
             # Your existing filter line
