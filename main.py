@@ -100,6 +100,8 @@ if st.button("Run"):
 
         all_cities_df = pd.concat(dataframes.values(), ignore_index=True)
 
+        all_cities_df["Bfl Remarks"] = ""
+
         st.write("Writing output...")
 
         output_path = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx").name
