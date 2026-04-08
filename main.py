@@ -101,6 +101,9 @@ if st.button("Run"):
         all_cities_df = pd.concat(dataframes.values(), ignore_index=True)
 
         all_cities_df["Bfl Remarks"] = ""
+        for col in cols_to_fix:
+            if col in all_cities_df.columns:
+                all_cities_df[col] = pd.to_numeric(all_cities_df[col], errors='coerce')
 
         st.write("Writing output...")
 
