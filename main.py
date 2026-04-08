@@ -9,7 +9,7 @@ st.title("Excel Processor")
 
 uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx"])
 
-st.caption("Required columns: HUB, Location, Zone/COC, Owner, Customer Code, Customer Name, Order No, Invoice No, WF_TaskID, Shap Hrs., Performed Hrs, Billed Hrs, Variance, Excess Paid, Excess billing, Short billing, Short / Missing Roster, Training & OJT, Complimentary Hrs.")
+st.caption("Required columns: HUB, Location, Zone/COC, Owner, Customer Code, Customer Name, Order No, Invoice No, WF_TaskID, Shap Hrs., Performed Hrs, Billed Hrs, Variance, Excess Paid, Excess billing, Short billing, Short / Missing Roster, Training & OJT, Complimentary Hrs., BFL Remarks")
 
 if st.button("Run"):
     if uploaded_file is not None:
@@ -39,7 +39,7 @@ if st.button("Run"):
             'HUB','Location','Zone/COC','Owner','Customer Code','Customer Name',
             'Order No','Invoice No','WF_TaskID','Shap Hrs.','Performed Hrs',
             'Billed Hrs','Variance','Excess Paid','Excess billing','Short billing',
-            'Short / Missing Roster','Training & OJT','Complimentary Hrs.'
+            'Short / Missing Roster','Training & OJT','Complimentary Hrs.', 'BFL Remarks'
         ]
 
         desired_columns = [col.lower() for col in desired_columns]
