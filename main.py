@@ -64,8 +64,7 @@ if st.button("Run"):
             )
 
             df = df[df['Customer Code'] != '']
-            df.loc[:, 'Loc'] = None
-            df.loc[df.index[0], 'Loc'] = name
+            df['Loc'] = name
 
             cols = ['Loc'] + [col for col in df.columns if col != 'Loc']
             df = df[cols]
@@ -100,7 +99,11 @@ if st.button("Run"):
 
         all_cities_df = pd.concat(dataframes.values(), ignore_index=True)
 
-        all_cities_df["Bfl Remarks"] = ""
+        all_cities_df['Loc'] = all_cities_df['Loc'].mask(
+            all_cities_df.duplicated(subset=['Loc']),
+            ''
+        )
+
         for col in cols_to_fix:
             if col in all_cities_df.columns:
                 all_cities_df[col] = pd.to_numeric(all_cities_df[col], errors='coerce')
